@@ -1,7 +1,7 @@
 # Личный проект «YetiCave» 
 
 * Студент: [Марианна Эльдарова](https://up.htmlacademy.ru/php/3/user/82294).
-* Наставник: `Кексобот`.
+* Наставник: `Кексобот` (https://up.htmlacademy.ru/php/3/user/82294).
 
 ---
 
