@@ -1,5 +1,6 @@
 <?php
-
+require_once('lots_array.php');
+session_start();
 // ставки пользователей, которыми надо заполнить таблицу
 $bets = [
     ['name' => 'Иван', 'price' => 11500, 'ts' => strtotime('-' . rand(1, 50) .' minute')],
@@ -7,6 +8,31 @@ $bets = [
     ['name' => 'Евгений', 'price' => 10500, 'ts' => strtotime('-' . rand(25, 50) .' hour')],
     ['name' => 'Семён', 'price' => 10000, 'ts' => strtotime('last week')]
 ];
+
+function time_format($timestamp) {
+ $now = strtotime('now');
+ $difference_time = ($now - $timestamp) / 3600;
+ if ($difference_time > 24) {
+  return date('d.m.y в H:i', $timestamp);
+ }
+ else {
+  if ($difference_time < 1) {
+   return floor($difference_time * 60) . " минут назад" ;
+  }
+  else {
+   return floor($difference_time) . ' часов назад';
+  }
+ }
+};
+
+if (isset($_GET['lot_id']) && isset($ads[$_GET['lot_id']]))  {
+	$lot_item = $_GET['lot_id'];
+	$lot = $ads[$lot_item];
+}
+else {
+	http_response_code (404);
+		exit('Ошибка 404. Страница не найдена');
+}
 ?>
 
 <!DOCTYPE html>
@@ -22,24 +48,31 @@ $bets = [
 <header class="main-header">
     <div class="main-header__container container">
         <h1 class="visually-hidden">YetiCave</h1>
-        <a class="main-header__logo" href="index.html">
+        <a class="main-header__logo" href="http://yeticave/">
             <img src="img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
         </a>
         <form class="main-header__search" method="get" action="https://echo.htmlacademy.ru">
             <input type="search" name="search" placeholder="Поиск лота">
             <input class="main-header__search-btn" type="submit" name="find" value="Найти">
         </form>
-        <a class="main-header__add-lot button" href="">Добавить лот</a>
+        <a class="main-header__add-lot button" href="/add.php">Добавить лот</a>
+        <?php if (!isset($_SESSION['user'])) : ?>
         <nav class="user-menu">
             <ul class="user-menu__list">
                 <li class="user-menu__item">
                     <a href="">Регистрация</a>
                 </li>
                 <li class="user-menu__item">
-                    <a href="#">Вход</a>
+                    <a href="/add-form.php">Вход</a>
                 </li>
             </ul>
         </nav>
+        <?php else: ?>
+        <div class="user-menu__logged">
+            <p><?=strip_tags($_SESSION['user'] ['name']); ?></p>
+            <a href="logout.php">Выход</a>
+        </div>
+        <?php endif; ?>
     </div>
 </header>
 
@@ -67,25 +100,19 @@ $bets = [
         </ul>
     </nav>
     <section class="lot-item container">
-        <h2>DC Ply Mens 2016/2017 Snowboard</h2>
+        <h2><?=htmlspecialchars($lot['name']); ?></h2>
         <div class="lot-item__content">
             <div class="lot-item__left">
                 <div class="lot-item__image">
-                    <img src="img/lot-image.jpg" width="730" height="548" alt="Сноуборд">
+                    <img src="<?=$lot['url']; ?>" width="730" height="548" alt="Сноуборд">
                 </div>
-                <p class="lot-item__category">Категория: <span>Доски и лыжи</span></p>
-                <p class="lot-item__description">Легкий маневренный сноуборд, готовый дать жару в любом парке, растопив
-                    снег
-                    мощным щелчкоми четкими дугами. Стекловолокно Bi-Ax, уложенное в двух направлениях, наделяет этот
-                    снаряд
-                    отличной гибкостью и отзывчивостью, а симметричная геометрия в сочетании с классическим прогибом
-                    кэмбер
-                    позволит уверенно держать высокие скорости. А если к концу катального дня сил совсем не останется,
-                    просто
-                    посмотрите на Вашу доску и улыбнитесь, крутая графика от Шона Кливера еще никого не оставляла
-                    равнодушным.</p>
+                <p class="lot-item__category">Категория: <span><?=htmlspecialchars($lot['categories']); ?></span></p>
+                <p class="lot-item__description"><?=htmlspecialchars($lot['description']) ; ?></p>
             </div>
             <div class="lot-item__right">
+               <?php if (!isset($_SESSION['user'])) : ?>
+               <p>&nbsp;</p>
+               <?php else: ?>
                 <div class="lot-item__state">
                     <div class="lot-item__timer timer">
                         10:54:12
@@ -93,10 +120,10 @@ $bets = [
                     <div class="lot-item__cost-state">
                         <div class="lot-item__rate">
                             <span class="lot-item__amount">Текущая цена</span>
-                            <span class="lot-item__cost">11 500</span>
+                            <span class="lot-item__cost"><?=$lot['price']; ?></span>
                         </div>
                         <div class="lot-item__min-cost">
-                            Мин. ставка <span>12 000 р</span>
+                            Мин. ставка <span><?=$lot['price']; ?></span>
                         </div>
                     </div>
                     <form class="lot-item__form" action="https://echo.htmlacademy.ru" method="post">
@@ -107,15 +134,18 @@ $bets = [
                         <button type="submit" class="button">Сделать ставку</button>
                     </form>
                 </div>
+                <?php endif; ?>
                 <div class="history">
                     <h3>История ставок (<span>4</span>)</h3>
                     <!-- заполните эту таблицу данными из массива $bets-->
                     <table class="history__list">
+                       <?php foreach ($bets as $key => $value) : ?>
                         <tr class="history__item">
-                            <td class="history__name"><!-- имя автора--></td>
-                            <td class="history__price"><!-- цена--> р</td>
-                            <td class="history__time"><!-- дата в человеческом формате--></td>
+                            <td class="history__name"><!-- имя автора--><?=$value ['name']; ?></td>
+                            <td class="history__price"><!-- цена--> <?=$value ['price']; ?>р</td>
+                            <td class="history__time"><!-- дата в человеческом формате--><?=time_format($value ['ts']); ?></td>
                         </tr>
+                        <?php endforeach; ?>
                     </table>
                 </div>
             </div>
