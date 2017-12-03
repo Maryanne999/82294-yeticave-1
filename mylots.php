@@ -6,9 +6,9 @@ $cookies_name = "lotinfo";
 $cookies = null;
 $path = "/";
 
-$lot = $_POST(['lot']);
-$bet = $_POST(['bet']);
-$lotDate = $_POST(['lotDate']);
+$lot = $_POST['lot'] ?? '';
+$bet = $_POST['bet'] ?? '';
+$lotDate = $_POST['lotDate'] ?? '';
 
 $cookie_arr = [
     $lot =>
@@ -18,9 +18,9 @@ $cookie_arr = [
     ]
 ];
 
-if (isset($_COOKIE(['lotinfo'])) {//если куки уже есть
-    $cookies[] = json_decode($_COOKIE(["lotinfo"]));
-    $cookies[] = $cookies[] + $cookie_arr[];
+if (isset($_COOKIE['lotinfo'])) {//если куки уже есть
+    $cookies[] = json_decode($_COOKIE["lotinfo"]);
+    array_push($cookies, $cookie_arr);//Посмотри эту функцию
     $for_cookie = json_encode($cookies[]);
     setcookie("lotinfo", $for_cookie, $path);
 }
