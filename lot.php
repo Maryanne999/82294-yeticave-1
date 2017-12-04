@@ -22,6 +22,7 @@ $bet = $_POST['bet'] ?? '';
 $lotDate = $_POST['lotDate'] ?? '';
 $errors = [];
 $err_messages = [];
+$is_betted;
 
 $cookie_arr = [
     $lot =>
@@ -51,15 +52,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
     if(!empty($_POST)) {
-        $bet = $_POST['bet'];
-        $lotDate = $_POST['lotDate'];
-        $lot = $_POST['lot'];
-        setcookie($bet, $lotDate, $lot);{
-                header("Location: /mylots.php");
+        if (isset($_COOKIE['lotinfo'])) {//если куки уже есть
+            $cookies = json_decode($_COOKIE["lotinfo"]);
+            array_push($cookies, $cookie_arr);
+            $for_cookie = json_encode($cookies);
+            setcookie("lotinfo", $for_cookie, $path);
+            header("Location: /mylots.php");
+        } else { //если нет куков с другими ставками
+            $for_cookie = json_encode($cookie_arr);
+            setcookie("lotinfo", $for_cookie);
+            header("Location: /mylots.php");
         }
     }
+
 };
 
+if (isset($_COOKIE[$lot_name])) {
+    $is_betted = true;
+
+};
 
 
 
@@ -83,7 +94,15 @@ $content = renderTemplate(
         'rules' => $rules,
         'errors' => $errors,
         'err_messages' => $err_messages,
-        'lot' => $lot
+        'lot' => $lot,
+        'is_betted' => $is_betted,
+        'cookies_name' => $cookies_name,
+        'cookies' => $cookies,
+        'path' => $path,
+        'lot' => $lot,
+        'bet' => $bet,
+        'lotDate' => $lotDate
+    ]
 
     ]
 );
