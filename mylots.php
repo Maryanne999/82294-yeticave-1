@@ -18,16 +18,6 @@ $cookie_arr = [
     ]
 ];
 
-if (isset($_COOKIE['lotinfo'])) {//если куки уже есть
-    $cookies[] = json_decode($_COOKIE["lotinfo"]);
-    array_push($cookies, $cookie_arr);//Посмотри эту функцию
-    $for_cookie = json_encode($cookies[]);
-    setcookie("lotinfo", $for_cookie, $path);
-}
- else { //если нет куков с другими ставками
-    $for_cookie = json_encode($cookie_arr);
-    setcookie("lotinfo", $for_cookie);
-};
 
 
 

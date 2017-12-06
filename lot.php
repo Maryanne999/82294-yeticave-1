@@ -20,16 +20,16 @@ $path = "/";
 $lot = $_POST['lot'] ?? '';
 $bet = $_POST['bet'] ?? '';
 $lotDate = $_POST['lotDate'] ?? '';
+$required = ['bet'];
 $errors = [];
 $err_messages = [];
 $is_betted;
 
+
 $cookie_arr = [
-    $lot =>
-        [
-            'bet' => $bet,
-            'lotDate' => $lotDate
-        ]
+    'bet' => $bet,
+    'lotDate' => $lotDate,
+    'lot_id' => $lot_id
 ];
 
 
@@ -45,7 +45,7 @@ else {
 //Обработка формы отправки ставки и сохранение в куки значений
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach ($_POST as $key => $value) {
-        if (in_array($key) && $value === '') {
+        if (in_array($key, $required) && $value === '') {
             $errors[] = $key;
             $err_messages[$key] = 'Введите ставку';
             continue;
@@ -67,12 +67,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 };
 
-if (isset($_COOKIE[$lot_name])) {
+/*
+$cookies = json_decode($_COOKIE["lotinfo"]);
+if (isset($cookies['lot_id'])) {
     $is_betted = true;
-
-};
-
-
+};*/
 
 $content = renderTemplate(
     'lot',
@@ -91,7 +90,6 @@ $content = renderTemplate(
         'password' => $password,
         'users' => $users,
         'required' => $required,
-        'rules' => $rules,
         'errors' => $errors,
         'err_messages' => $err_messages,
         'lot' => $lot,
@@ -102,8 +100,6 @@ $content = renderTemplate(
         'lot' => $lot,
         'bet' => $bet,
         'lotDate' => $lotDate
-    ]
-
     ]
 );
 
