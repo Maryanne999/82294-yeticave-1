@@ -38,7 +38,8 @@ $content = renderTemplate(
         'lot' => $lot,
         'bet' => $bet,
         'lotDate' => $lotDate,
-        'lot_id' => $lot_id
+        'lot_id' => $lot_id,
+        'file_url' => $file_url,
     ]
 );
 
