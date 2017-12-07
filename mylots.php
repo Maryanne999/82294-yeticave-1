@@ -6,9 +6,10 @@ $cookies_name = "lotinfo";
 $cookies = null;
 $path = "/";
 
-$lot = $_POST(['lot']);
-$bet = $_POST(['bet']);
-$lotDate = $_POST(['lotDate']);
+$lot = $_POST['lot'] ?? '';
+$bet = $_POST['bet'] ?? '';
+$lotDate = $_POST['lotDate'] ?? '';
+$lot_id = $_GET['lot_id'];
 
 $cookie_arr = [
     $lot =>
@@ -18,18 +19,8 @@ $cookie_arr = [
     ]
 ];
 
-if (isset($_COOKIE(['lotinfo'])) {//если куки уже есть
-    $cookies[] = json_decode($_COOKIE(["lotinfo"]));
-    $cookies[] = $cookies[] + $cookie_arr[];
-    $for_cookie = json_encode($cookies[]);
-    setcookie("lotinfo", $for_cookie, $path);
-}
- else { //если нет куков с другими ставками
-    $for_cookie = json_encode($cookie_arr);
-    setcookie("lotinfo", $for_cookie);
-};
-
-
+if (isset($_COOKIE['lotinfo'])) {
+    $cookies = json_decode($_COOKIE["lotinfo"], TRUE);
 
 $content = renderTemplate(
     'mylots',
@@ -46,7 +37,8 @@ $content = renderTemplate(
         'path' => $path,
         'lot' => $lot,
         'bet' => $bet,
-        'lotDate' => $lotDate
+        'lotDate' => $lotDate,
+        'lot_id' => $lot_id
     ]
 );
 
@@ -60,5 +52,7 @@ $layout_content = renderTemplate(
         'users' => $users
     )
 );
+}
+
 print($layout_content);
 ?>
