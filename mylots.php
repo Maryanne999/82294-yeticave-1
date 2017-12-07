@@ -9,6 +9,7 @@ $path = "/";
 $lot = $_POST['lot'] ?? '';
 $bet = $_POST['bet'] ?? '';
 $lotDate = $_POST['lotDate'] ?? '';
+$lot_id = $_GET['lot_id'];
 
 $cookie_arr = [
     $lot =>
@@ -18,8 +19,8 @@ $cookie_arr = [
     ]
 ];
 
-
-
+if (isset($_COOKIE['lotinfo'])) {
+    $cookies = json_decode($_COOKIE["lotinfo"], TRUE);
 
 $content = renderTemplate(
     'mylots',
@@ -36,7 +37,8 @@ $content = renderTemplate(
         'path' => $path,
         'lot' => $lot,
         'bet' => $bet,
-        'lotDate' => $lotDate
+        'lotDate' => $lotDate,
+        'lot_id' => $lot_id
     ]
 );
 
@@ -50,5 +52,7 @@ $layout_content = renderTemplate(
         'users' => $users
     )
 );
+}
+
 print($layout_content);
 ?>

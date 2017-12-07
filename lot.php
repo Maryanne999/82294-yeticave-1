@@ -12,27 +12,10 @@ $bets = [
     ['name' => 'Семён', 'price' => 10000, 'ts' => strtotime('last week')]
 ];
 
-//переменные ставок
-$cookies_name = "lotinfo";
-$cookies = null;
-$path = "/";
-
 $lot = $_POST['lot'] ?? '';
 $bet = $_POST['bet'] ?? '';
 $lotDate = $_POST['lotDate'] ?? '';
-$required = ['bet'];
-$errors = [];
-$err_messages = [];
-$is_betted;
-
-
-$cookie_arr = [
-    'bet' => $bet,
-    'lotDate' => $lotDate,
-    'lot_id' => $lot_id
-];
-
-
+$lot_id = $_GET['lot_id'];
 if (isset($_GET['lot_id']) && isset($ads[$_GET['lot_id']]))  {
 	$lot_item = $_GET['lot_id'];
 	$lot = $ads[$lot_item];
@@ -43,6 +26,9 @@ else {
 };
 
 //Обработка формы отправки ставки и сохранение в куки значений
+$required = ['bet'];
+$errors = [];
+$err_messages = [];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach ($_POST as $key => $value) {
         if (in_array($key, $required) && $value === '') {
@@ -51,12 +37,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             continue;
         }
     }
+    //переменные ставок
+    $cookies_name = "lotinfo";
+    $cookies = null;
+    $path = "/";
+    $is_betted;
+
+    $cookie_arr = [
+        'bet' => $bet,
+        'lotDate' => $lotDate,
+        'lot_id' => $lot_id
+    ];
+
     if(!empty($_POST)) {
         if (isset($_COOKIE['lotinfo'])) {//если куки уже есть
-            $cookies = json_decode($_COOKIE["lotinfo"]);
+            $cookies = json_decode($_COOKIE["lotinfo"], TRUE);
             array_push($cookies, $cookie_arr);
             $for_cookie = json_encode($cookies);
-            setcookie("lotinfo", $for_cookie, $path);
+            setcookie("lotinfo", $for_cookie);
             header("Location: /mylots.php");
         } else { //если нет куков с другими ставками
             $for_cookie = json_encode($cookie_arr);
@@ -67,11 +65,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 };
 
-/*
-$cookies = json_decode($_COOKIE["lotinfo"]);
-if (isset($cookies['lot_id'])) {
+
+$cookies = json_decode($_COOKIE["lotinfo"], TRUE);
+if ($cookies['lot_id'] == $_GET['lot_id']) {
     $is_betted = true;
-};*/
+};
 
 $content = renderTemplate(
     'lot',
@@ -99,7 +97,8 @@ $content = renderTemplate(
         'path' => $path,
         'lot' => $lot,
         'bet' => $bet,
-        'lotDate' => $lotDate
+        'lotDate' => $lotDate,
+        'lot_id' => $lot_id
     ]
 );
 
