@@ -13,9 +13,10 @@ $bets = [
 ];
 
 $lot = $_POST['lot'] ?? '';
-$bet = $_POST['bet'] ?? '';
-$lotDate = $_POST['lotDate'] ?? '';
+$bet = $_POST['cost'] ?? '';
+$lotDate = strtotime('now');
 $lot_id = $_GET['lot_id'];
+
 if (isset($_GET['lot_id']) && isset($ads[$_GET['lot_id']]))  {
 	$lot_item = $_GET['lot_id'];
 	$lot = $ads[$lot_item];
@@ -46,7 +47,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $cookie_arr = [
         'bet' => $bet,
         'lotDate' => $lotDate,
-        'lot_id' => $lot_id
+        'lot_id' => $lot_id,
+        'name' => $lot['name'],
+        'url' => $lot['url'],
+        'price' => $lot['price'],
+        'categories' => $lot['categories']
     ];
 
     if(!empty($_POST)) {
@@ -67,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
 $cookies = json_decode($_COOKIE["lotinfo"], TRUE);
+$test = 1;
 if ($cookies['lot_id'] == $_GET['lot_id']) {
     $is_betted = true;
 };

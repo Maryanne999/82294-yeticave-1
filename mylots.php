@@ -1,5 +1,6 @@
 <?php
 require_once('functions.php');
+require_once('lots_array.php');
 session_start ();
 
 $cookies_name = "lotinfo";
@@ -7,20 +8,28 @@ $cookies = null;
 $path = "/";
 
 $lot = $_POST['lot'] ?? '';
-$bet = $_POST['bet'] ?? '';
-$lotDate = $_POST['lotDate'] ?? '';
+$bet = $_POST['cost'] ?? '';
+$lotDate = strtotime('now');
 $lot_id = $_GET['lot_id'];
 
+if (isset($_GET['lot_id']) && isset($ads[$_GET['lot_id']]))  {
+    $lot_item = $_GET['lot_id'];
+    $lot = $ads[$lot_item];
+};
+
 $cookie_arr = [
-    $lot =>
-    [
         'bet' => $bet,
-        'lotDate' => $lotDate
-    ]
+        'lotDate' => $lotDate,
+        'name' => $lot['name'],
+        'url' => $lot['url'],
+        'price' => $lot['price'],
+        'categories' => $lot['categories']
+
 ];
 
 if (isset($_COOKIE['lotinfo'])) {
     $cookies = json_decode($_COOKIE["lotinfo"], TRUE);
+    array_push($cookies, $cookie_arr);
 
 $content = renderTemplate(
     'mylots',
@@ -38,7 +47,11 @@ $content = renderTemplate(
         'lot' => $lot,
         'bet' => $bet,
         'lotDate' => $lotDate,
-        'lot_id' => $lot_id
+        'lot_id' => $lot_id,
+        'name' => $lot['name'],
+        'url' => $lot['url'],
+        'price' => $lot['price'],
+        'categories' => $lot['categories']
     ]
 );
 
