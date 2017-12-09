@@ -1,5 +1,6 @@
 <?php
 require_once('functions.php');
+require_once('init.php');
 require_once('lots_array.php');
 
 session_start();
@@ -13,16 +14,16 @@ $bets = [
 ];
 
 $lot = $_POST['lot'] ?? '';
-$bet = $_POST['bet'] ?? '';
-$lotDate = $_POST['lotDate'] ?? '';
+$bet = $_POST['cost'] ?? '';
+$lotDate = strtotime('now');
 $lot_id = $_GET['lot_id'];
 if (isset($_GET['lot_id']) && isset($ads[$_GET['lot_id']]))  {
-	$lot_item = $_GET['lot_id'];
-	$lot = $ads[$lot_item];
+    $lot_item = $_GET['lot_id'];
+    $lot = $ads[$lot_item];
 }
 else {
-	http_response_code (404);
-		exit('Ошибка 404. Страница не найдена');
+    http_response_code (404);
+    exit('Ошибка 404. Страница не найдена');
 };
 
 //Обработка формы отправки ставки и сохранение в куки значений
@@ -42,13 +43,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $cookies = null;
     $path = "/";
     $is_betted;
-
     $cookie_arr = [
         'bet' => $bet,
         'lotDate' => $lotDate,
-        'lot_id' => $lot_id
+        'lot_id' => $lot_id,
+        'name' => $lot['name'],
+        'url' => $lot['url'],
+        'price' => $lot['price'],
+        'categories' => $lot['categories']
     ];
-
     if(!empty($_POST)) {
         if (isset($_COOKIE['lotinfo'])) {//если куки уже есть
             $cookies = json_decode($_COOKIE["lotinfo"], TRUE);
@@ -62,15 +65,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header("Location: /mylots.php");
         }
     }
-
 };
 
-
 $cookies = json_decode($_COOKIE["lotinfo"], TRUE);
+$test = 1;
 if ($cookies['lot_id'] == $_GET['lot_id']) {
     $is_betted = true;
 };
-
 $content = renderTemplate(
     'lot',
     [
@@ -101,7 +102,6 @@ $content = renderTemplate(
         'lot_id' => $lot_id
     ]
 );
-
 $layout_content = renderTemplate(
     'layout',
     array(
@@ -113,5 +113,4 @@ $layout_content = renderTemplate(
     )
 );
 print($layout_content);
-
 ?>

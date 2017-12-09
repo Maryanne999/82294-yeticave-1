@@ -1,9 +1,10 @@
 <?php
 
-session_start();
-
 require_once('functions.php');
+require_once('init.php');
 require_once('lots_array.php');
+
+session_start();
 
 // устанавливаем часовой пояс в Московское время
 date_default_timezone_set('Europe/Moscow');
