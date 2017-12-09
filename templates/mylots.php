@@ -28,12 +28,12 @@
                 <tr class="rates__item">
                     <td class="rates__info">
                         <div class="rates__img">
-                            <img src="<?=$lot; ?>" width="54" height="40" alt="<?=$lot; ?>"><!--$lot['url']-->
+                            <img src="<?=$value ['url']; ?>" width="54" height="40" alt="Сноуборд">
                         </div>
-                        <h3 class="rates__title"><a href="lot.html"><?=$lot; ?></a></h3>
+                        <h3 class="rates__title"><a href="lot.html"><?=$value ['name']; ?></a></h3>
                     </td>
                     <td class="rates__category">
-                        <?=$lot; ?> <!--$lot['categories']-->
+                        <?=$value ['categories']; ?>
                     </td>
                     <td class="rates__timer">
                         <div class="timer timer--finishing">07:13:34</div>
@@ -42,7 +42,7 @@
                         <?=$bet; ?>
                     </td>
                     <td class="rates__time">
-                        <?=$lotDate ; ?>
+                        <?=$lotDate; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
