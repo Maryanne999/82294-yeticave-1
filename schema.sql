@@ -3,7 +3,7 @@ use yeticave;
 
 CREATE TABLE categories (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  name CHAR
+  name CHAR(255)
 );
 
 CREATE TABLE lots (
@@ -15,6 +15,9 @@ CREATE TABLE lots (
   price DECIMAL,
   end_date DATETIME,
   rate_step DECIMAL,
+  author_id INT,
+  winner_id INT,
+  category CHAR
 );
 
 CREATE TABLE bets (
