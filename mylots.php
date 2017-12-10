@@ -1,6 +1,6 @@
 <?php
 require_once('functions.php');
-require_once('init.php');
+//require_once('init.php');
 require_once('lots_array.php');
 
 session_start ();

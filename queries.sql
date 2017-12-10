@@ -2,9 +2,9 @@ USE yeticave;
 
 INSERT INTO categories (name) VALUES ('Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное');
 
-INSERT INTO users (email, password, name, date_registered, contacts) VALUES ('ignat.v@gmail.com', '$2y$10$OqvsKHQwr0Wk6FMZDoHo1uHoXd4UdxJG/5UDtUiie00XaxMHrW8ka', 'Игнат', '02.11.2017', 'Санкт-Петербург, ул. Невский проспект, 28. Тел.: +7 812 448-23-55'),
-('kitty_93@li.ru', '$2y$10$bWtSjUhwgggtxrnJ7rxmIe63ABubHQs0AS0hgnOo41IEdMHkYoSVa', 'Леночка', '29.09.2017', 'Москва, ул. Арбат, 53. Тел.: +7 499 241-92-95'),
-('warrior07@mail.ru', '$2y$10$2OxpEH7narYpkOT1H5cApezuzh10tZEEQ2axgFOaKW.55LxIJBgWW', 'Руслан', '15.11.2017', 'Пятигорк, ул. Лермонтова, 14. Тел.: +7 928 999-90-05');
+INSERT INTO users (email, password, name, date_registered, avatar, contacts) VALUES ('ignat.v@gmail.com', '$2y$10$OqvsKHQwr0Wk6FMZDoHo1uHoXd4UdxJG/5UDtUiie00XaxMHrW8ka', 'Игнат', '02.11.2017', 'img/user1.jpg', 'Санкт-Петербург, ул. Невский проспект, 28. Тел.: +7 812 448-23-55'),
+('kitty_93@li.ru', '$2y$10$bWtSjUhwgggtxrnJ7rxmIe63ABubHQs0AS0hgnOo41IEdMHkYoSVa', 'Леночка', '29.09.2017', 'img/user2.jpg', 'Москва, ул. Арбат, 53. Тел.: +7 499 241-92-95'),
+('warrior07@mail.ru', '$2y$10$2OxpEH7narYpkOT1H5cApezuzh10tZEEQ2axgFOaKW.55LxIJBgWW', 'Руслан', '15.11.2017', 'img/user3.jpg', 'Пятигорк, ул. Лермонтова, 14. Тел.: +7 928 999-90-05');
 
 INSERT INTO lots (id, name, num_rate, description, image, price, category)  VALUES
 ('1', '2014 Rossignol District Snowboard', '3', 'Вы еще не ломали ноги? Тогда мы идем к вам', 'img/lot-1.jpg', '10999', 'Доски и лыжи'),
