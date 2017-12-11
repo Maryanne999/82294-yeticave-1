@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             setcookie("lotinfo", $for_cookie);
             header("Location: /mylots.php");
         } else { //если нет куков с другими ставками
-            $for_cookie = json_encode($cookie_arr);
+            $for_cookie = json_encode([$cookie_arr]);
             setcookie("lotinfo", $for_cookie);
             header("Location: /mylots.php");
         }
@@ -68,10 +68,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 };
 
 $cookies = json_decode($_COOKIE["lotinfo"], TRUE);
-$test = 1;
-if ($cookies['lot_id'] == $_GET['lot_id']) {
-    $is_betted = true;
-};
+  foreach ($cookies as $value)  {
+      if ($value['lot_id'] == $_GET['lot_id']) {
+          $is_betted = true;
+      }
+  };
 $content = renderTemplate(
     'lot',
     [

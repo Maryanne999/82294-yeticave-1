@@ -7,7 +7,7 @@ $connect = mysqli_connect(
     'localhost', //host
     'root', //user
     '', //pass
-    'yaticave' //db
+    'yeticave' //db
 );
 
 mysqli_set_charset($connect, 'utf-8');
@@ -21,7 +21,8 @@ if (!$connect) {
     $errorPage = renderTemplate(
         'error',
         [
-            'error' => $error
+            'error' => $error,
+            'connect' => $connect
         ]
     );
     $layout_content = renderTemplate(

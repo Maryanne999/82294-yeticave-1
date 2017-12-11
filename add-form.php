@@ -12,7 +12,7 @@ $errors = [];
 $err_messages = [];
 
 
-// Пользователи для аутентификации
+//Пользователи для аутентификации
 $users = [
     [
         'email' => 'ignat.v@gmail.com',
@@ -60,9 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		 	}
 		}
 	}
-}
+};
 
-//echo $_SESSION['user'];
 
 
 $content = renderTemplate(
@@ -80,16 +79,13 @@ $content = renderTemplate(
 
 $layout_content = renderTemplate(
     'layout',
-    array(
+    [
         'title' => 'Yeti Cave — Форма входа',
 		'content' => $content,
         'email' => $email,
         'password' => $password,
         'users' => $users
-        //'is_auth' => $is_auth,
-        //'user_avatar' => $user_avatar,
-        //'user_name' => $user_name
-    )
+    ]
 );
 print($layout_content);
 ?>

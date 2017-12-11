@@ -9,15 +9,15 @@ CREATE TABLE categories (
 CREATE TABLE lots (
   id INT AUTO_INCREMENT PRIMARY KEY,
   creation_date DATETIME,
-  name CHAR,
+  name VARCHAR(255),
   description TEXT,
-  image CHAR,
+  image CHAR(32),
   price DECIMAL,
   end_date DATETIME,
   rate_step DECIMAL,
   author_id INT,
   winner_id INT,
-  category CHAR
+  category_id CHAR
 );
 
 CREATE TABLE bets (
@@ -31,7 +31,7 @@ CREATE TABLE bets (
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   email VARCHAR(255) unique key,
-  password CHAR(32),
+  password CHAR(64),
   name VARCHAR(255),
   avatar VARCHAR(255),
   date_registered DATETIME,

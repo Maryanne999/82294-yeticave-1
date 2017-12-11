@@ -20,11 +20,7 @@ if (isset($_GET['lot_id']) && isset($ads[$_GET['lot_id']]))  {
 
 $cookie_arr = [
     'bet' => $bet,
-    'lotDate' => $lotDate,
-    'name' => $lot['name'],
-    'url' => $lot['url'],
-    'price' => $lot['price'],
-    'categories' => $lot['categories']
+    'lotDate' => $lotDate
 ];
 if (isset($_COOKIE['lotinfo'])) {
     $cookies = json_decode($_COOKIE["lotinfo"], TRUE);
@@ -45,11 +41,7 @@ if (isset($_COOKIE['lotinfo'])) {
             'lot' => $lot,
             'bet' => $bet,
             'lotDate' => $lotDate,
-            'lot_id' => $lot_id,
-            'name' => $lot['name'],
-            'url' => $lot['url'],
-            'price' => $lot['price'],
-            'categories' => $lot['categories']
+            'lot_id' => $lot_id
         ]
     );
     $layout_content = renderTemplate(

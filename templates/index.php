@@ -33,7 +33,7 @@
             </select>
         </div>
         <ul class="lots__list">
-           <?php foreach ($ads as $key => $value) : ?>
+            <?php foreach ($ads as $key => $value) : ?>
             <li class="lots__item lot">
                 <div class="lot__image">
                     <img src="<?=$value ['url']; ?>" width="350" height="260" alt="Сноуборд">

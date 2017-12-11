@@ -4,14 +4,11 @@ require_once('functions.php');
 
 session_start ();
 
-$user_name = 'Константин';
-$user_avatar = 'img/user.jpg';
+
 $categories = ["Доски и лыжи", "Крепления", "Ботинки", "Одежда", "Инструменты", "Разное"];
 
 
 if (!isset($_SESSION['user'])) {
-	//header('HTTP/1.1 403 incorrect user');
-   // echo 'Incorrect user';
 	header(http_response_code(403));
 }
 else {
@@ -129,9 +126,6 @@ $layout_content = renderTemplate(
         'email' => $email,
         'password' => $password,
         'users' => $users
-        //'is_auth' => $is_auth,
-        //'user_avatar' => $user_avatar,
-        //'user_name' => $user_name
     ]
 );
 print($layout_content);
