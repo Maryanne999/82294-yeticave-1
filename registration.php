@@ -38,10 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if(empty($errors)) {
         $sql_reg = "INSERT INTO users (email, password, name, contacts, date_registered) VALUES (?, ?, ?, ?, NOW())";
         $data = [$email, $password, $name, $contacts];
-        $stmt = db_get_prepare_stmt($connect, $sql, $data);
+        $stmt = db_get_prepare_stmt($connect, $sql_reg, $data);
         $result_reg = mysqli_stmt_execute($stmt);
         if ($result_reg) {
-            if (password_verify($password, $user['password'])) {
+            $pass_hash = password_hash($password); {
             header("Location: add-form.php");
             }
         }

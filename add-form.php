@@ -1,17 +1,8 @@
 <?
 require_once('functions.php');
 require_once('init.php');
+require_once('mysql_helper.php');
 session_start();
-
-
-//$sql = "SELECT name FROM categories";
-//
-//$result = mysqli_query($connect, $sql);
-//
-//$categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-
-
 
 $required = ['email', 'password'];
 $rules = ['email' => 'validateEmail'];
@@ -19,27 +10,6 @@ $email = $_POST['email'] ?? '';
 $password = $_POST['password'] ?? '';
 $errors = [];
 $err_messages = [];
-
-
-////Пользователи для аутентификации
-//$users = [
-//    [
-//        'email' => 'ignat.v@gmail.com',
-//        'name' => 'Игнат',
-//        'password' => '$2y$10$OqvsKHQwr0Wk6FMZDoHo1uHoXd4UdxJG/5UDtUiie00XaxMHrW8ka',
-//    ],
-//    [
-//        'email' => 'kitty_93@li.ru',
-//        'name' => 'Леночка',
-//        'password' => '$2y$10$bWtSjUhwgggtxrnJ7rxmIe63ABubHQs0AS0hgnOo41IEdMHkYoSVa',
-//    ],
-//    [
-//        'email' => 'warrior07@mail.ru',
-//        'name' => 'Руслан',
-//        'password' => '$2y$10$2OxpEH7narYpkOT1H5cApezuzh10tZEEQ2axgFOaKW.55LxIJBgWW',
-//    ]
-//];
-
 
 //Валидация полей формы
 
@@ -57,23 +27,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			}
 		}
     }
-
-    $sql = "SELECT * FROM users WHERE email = 'email' password = 'password'";
-
-    $result = mysqli_query($connect, $sql);
-
-    $user = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-
     if(!empty($_POST)) {
 		$email = $_POST['email'];
 	    $password = $_POST['password'];
-		if ($user = searchUserByEmail($email, $users)) {
+
+        $sql = "SELECT * FROM users WHERE email = ?";
+        $data = [$email];
+        $stmt = db_get_prepare_stmt($connect, $sql, $data);
+        $user = mysqli_stmt_execute($stmt);
+        $user = mysqli_stmt_get_result($stmt);
+
 	if (password_verify($password, $user['password'])) {
 		$_SESSION['user'] = $user;
 		header("Location: /index.php");
 		 	}
-		}
 	}
 };
 
