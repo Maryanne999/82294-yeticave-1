@@ -2,9 +2,9 @@
    <nav class="nav">
     <ul class="nav__list container">
      <?php foreach ($categories as $key => $value) : ?>
-      <li class="nav__item">
-        <a href="all-lots.html"><?=$value;?></a>
-      </li>
+        <li class="nav__item">
+          <a href="all-lots.html"><?=$value['name'];?></a>
+        </li>
      <?php endforeach; ?>
     </ul>
   </nav>
@@ -20,7 +20,7 @@
         <label for="category">Категория</label>
         <select id="category" name="category" required>
  <?php foreach ($categories as $key => $value) : ?>
-                <option><?=$value;?></option>
+                <option><?=$value['name'];?></option>
                <?php endforeach; ?>
         </select>
         <span class="form__error"><?=isset($err_messages['category']) ? 'Выберите категорию'  : ''; ?></span>
@@ -28,7 +28,7 @@
     </div>
     <div class="form__item form__item--wide <?=in_array('message', $errors) ? 'form__item--invalid' : '' ?>">
       <label for="message">Описание</label>
-      <textarea id="message" name="message" placeholder="Напишите описание лота" required><?=$message;?></textarea>
+      <textarea id="message" name="message" placeholder="Напишите описание лота" required><?=$description;?></textarea>
       <span class="form__error"><?=isset($err_messages['message']) ? 'Добавьте описание'  : ''; ?></span>
     </div>
     <div class="form__item form__item--file <?=in_array('avatar', $errors) ? 'form__item--uploaded' : '' ?>"> <!-- form__item--uploaded -->

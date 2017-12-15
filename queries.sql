@@ -21,11 +21,14 @@ INSERT INTO bets  (date, price, user_id, lot_id) VALUES ('5.12.2017', '11500', '
 SELECT name FROM categories;
 
 --Получение новых лотов
-SELECT  name, num_rate, description, image, price, category FROM lots /*Как получить самые новые, исходя из имеющихся данных*/
+SELECT lot.name, lot.price, lot.image, MAX(bets.price), COUNT(bets.id), categories.name FROM lots
+JOIN  categories ON lot.category_id = categories.id
+LEFT JOIN bets ON lot.id = bets.lot_id
+WHERE creation_date > NOV()
+GROUP BY lot.id;
 
 --Получение лота по название и описанию
-SELECT * FROM lots WHERE  name = 'Куртка для сноуборда DC Mutiny Charocal';
-SELECT * FROM lots WHERE description = 'Супер-пупер куртка';
+SELECT * FROM lots WHERE  name = 'Куртка для сноуборда DC Mutiny Charocal' OR description = 'Супер-пупер куртка';
 
 --Обновление название лота по идентификтору
 

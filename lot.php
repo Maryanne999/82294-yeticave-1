@@ -1,7 +1,7 @@
 <?php
 require_once('functions.php');
-//require_once('init.php');
-require_once('lots_array.php');
+require_once('init.php');
+
 
 session_start();
 
@@ -13,13 +13,20 @@ $bets = [
     ['name' => 'Семён', 'price' => 10000, 'ts' => strtotime('last week')]
 ];
 
+
+$sql_lots = "SELECT *, categories.name as 'category_name' FROM lots JOIN  categories ON lots.category_id = categories.id";
+
+$result_lots = mysqli_query($connect, $sql_lots);
+
+$lots = mysqli_fetch_all($result_lots, MYSQLI_ASSOC);
+
 $lot = $_POST['lot'] ?? '';
 $bet = $_POST['cost'] ?? '';
 $lotDate = strtotime('now');
 $lot_id = $_GET['lot_id'];
-if (isset($_GET['lot_id']) && isset($ads[$_GET['lot_id']]))  {
+if (isset($_GET['lot_id']) && isset($lots[$_GET['lot_id']]))  {
     $lot_item = $_GET['lot_id'];
-    $lot = $ads[$lot_item];
+    $lot = $lots[$lot_item];
 }
 else {
     http_response_code (404);
@@ -32,7 +39,7 @@ $errors = [];
 $err_messages = [];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach ($_POST as $key => $value) {
-        if (in_array($key, $required) && $value === '') {
+        if (in_array($key, $required) && is_numeric($value) === '') {
             $errors[] = $key;
             $err_messages[$key] = 'Введите ставку';
             continue;
@@ -64,6 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             setcookie("lotinfo", $for_cookie);
             header("Location: /mylots.php");
         }
+
     }
 };
 

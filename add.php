@@ -1,12 +1,16 @@
 <?php
 require_once('functions.php');
-//require_once('init.php');
+require_once('init.php');
 
 session_start ();
 
 
-$categories = ["Доски и лыжи", "Крепления", "Ботинки", "Одежда", "Инструменты", "Разное"];
 
+$sql = "SELECT name FROM categories";
+
+$result = mysqli_query($connect, $sql);
+
+$categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 if (!isset($_SESSION['user'])) {
 	header(http_response_code(403));
@@ -21,7 +25,7 @@ $bets = [
 ];
 
 //Валидация полей формы и проверка полей с цифрами
-$required = ['lot-name', 'category', 'message', 'lot-rate', 'lot-step', 'lot-date'];
+$required = ['lot-name', 'category', 'description', 'lot-rate', 'lot-step', 'lot-date'];
 $num_fields = ['lot-step', 'lot-rate'];
 $errors = [];
 $err_messages = [];
@@ -30,7 +34,7 @@ $file_url;
 //Сохранение значений формы
 $lot_name = $_POST['lot-name'] ?? '';
 $avatar = $_POST['avatar'] ?? '';
-$message = $_POST['message'] ?? '';
+$description = $_POST['description'] ?? '';
 $lot_rate = $_POST['lot-rate'] ?? '';
 $lot_step = $_POST['lot-step'] ?? '';
 $lotDate = $_POST['lot-date'] ?? '';
@@ -52,6 +56,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	  }
 
    }
+
+    if(strtotime($lot['lot_date']) < strtotime('tomorrow')) {
+        $errors['lot_date'] = 'Введите дату больше текущей даты';
+    }
     //Загрузка и сохранение фото
     if (isset($_FILES['avatar'])) {
         $file_name = $_FILES['avatar'] ['name'];
@@ -59,6 +67,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $file_url = '/img/' . $file_name;
 
         move_uploaded_file($_FILES['avatar'] ['tmp_name'], $file_path . $file_name);
+
+        $sql = 'INSERT INTO lots (lot_date, lot_name, description, lot-rate, lot_step, category) VALUES (NOW(), ?, ?, ?, ?, ?)';
+        $stmt = mysqli_prepare($connect, $sql);
+
+        mysqli_stmt_bind_param($stmt, 'issiis', $lot['lot_date'], $lot['lot_name'], $lot['description'], $lot['lot-rate'], $lot['lot_step'], $lot['category']);
+        $res = mysqli_stmt_execute($stmt);
+
+        if ($res) {
+            $lot_id = mysqli_insert_id($connect);
+
+            header("Location: lot.php?lot_id=" . $lot_id);
+        }
     }
     if (count($errors) == 0) {
         $content = renderTemplate(

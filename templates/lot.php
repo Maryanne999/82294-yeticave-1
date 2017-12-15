@@ -25,9 +25,9 @@
     <div class="lot-item__content">
         <div class="lot-item__left">
             <div class="lot-item__image">
-                <img src="<?=$lot['url']; ?>" width="730" height="548" alt="Сноуборд">
+                <img src="<?=$lot['image']; ?>" width="730" height="548" alt="<?=$lot['name']; ?>">
             </div>
-            <p class="lot-item__category">Категория: <span><?=htmlspecialchars($lot['categories']); ?></span></p>
+            <p class="lot-item__category">Категория: <span><?=htmlspecialchars($lot['category_name']); ?></span></p>
             <p class="lot-item__description"><?=htmlspecialchars($lot['description']) ; ?></p>
         </div>
         <div class="lot-item__right">
