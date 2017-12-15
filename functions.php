@@ -1,4 +1,6 @@
 <?php
+require_once('mysql_helper.php');
+
 function renderTemplate($file, $info) {
 	$file = 'templates/' . $file .'.php';
 	if (file_exists($file)){
@@ -33,16 +35,16 @@ function validateEmail($value) {
 }
 
 //Функция поиска пользователя по email
-function searchUserByEmail($email, $users) {
+/*function searchUserByEmail($email, $users) {
 	$result = null;
-	foreach ($users as $user) {
-		if ($user['email'] == $email) {
-			$result = $user;
-			break;
-		}
-	}
+//	foreach ($users as $user) {
+//		if ($user['email'] == $email) {
+//			$result = $user;
+//			break;
+//		}
+//	}
 	return $result;
-}
+}*/
 
 //Получает хэш пароля
 $passwordHash = password_hash($password, PASSWORD_DEFAULT);

@@ -1,14 +1,17 @@
 <?php
 require_once('functions.php');
+require_once('mysql_helper.php');
 require_once('init.php');
 
 session_start ();
 
 $required = ['email', 'password', 'name', 'contacts'];
+$rules = ['email' => 'validateEmail'];
 $email = $_POST['email'] ?? '';
 $password = $_POST['password'] ?? '';
 $name = $_POST['name'] ?? '';
 $contacts = $_POST['contacts'] ?? '';
+$avatar;
 $errors = [];
 $err_messages = [];
 
@@ -23,17 +26,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $result= call_user_func('validateEmail', $value);
             if (!result) {
                 $eerrors[] = $key;
+
+                $sql = "SELECT * FROM users WHERE email = ?";
+                $data = [$email];
+                $stmt = db_get_prepare_stmt($connect, $sql, $data);
+                $result = mysqli_stmt_execute($stmt);
             }
         }
     }
 
-    if(!empty($_POST)) {
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        if ($user = searchUserByEmail($email, $users)) {
+    if(empty($errors)) {
+        $sql_reg = "INSERT INTO users (email, password, name, contacts, date_registered) VALUES (?, ?, ?, ?, NOW())";
+        $data = [$email, $password, $name, $contacts];
+        $stmt = db_get_prepare_stmt($connect, $sql, $data);
+        $result_reg = mysqli_stmt_execute($stmt);
+        if ($result_reg) {
             if (password_verify($password, $user['password'])) {
-                $_SESSION['user'] = $user;
-                header("Location: /index.php");
+            header("Location: add-form.php");
             }
         }
     }
