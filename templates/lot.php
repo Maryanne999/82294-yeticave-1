@@ -25,9 +25,9 @@
     <div class="lot-item__content">
         <div class="lot-item__left">
             <div class="lot-item__image">
-                <img src="<?=$lot['url']; ?>" width="730" height="548" alt="Сноуборд">
+                <img src="<?=$lot['image']; ?>" width="730" height="548" alt="<?=$lot['name']; ?>">
             </div>
-            <p class="lot-item__category">Категория: <span><?=htmlspecialchars($lot['categories']); ?></span></p>
+            <p class="lot-item__category">Категория: <span><?=htmlspecialchars($lot['category_name']); ?></span></p>
             <p class="lot-item__description"><?=htmlspecialchars($lot['description']) ; ?></p>
         </div>
         <div class="lot-item__right">
@@ -50,7 +50,7 @@
                     <form class="lot-item__form" action="lot.php?lot_id=<?=($_GET['lot_id']); ?>" method="post">
                         <p class="lot-item__form-item">
                             <label for="cost">Ваша ставка</label>
-                            <input id="cost" type="number" name="cost" placeholder="12 000" value="<?=$bet; ?>">
+                            <input id="cost" type="number" name="cost" placeholder="12 000" value="<?=$bet; ?>" required>
                         </p>
                         <button type="submit" class="button">Сделать ставку</button>
                     </form>

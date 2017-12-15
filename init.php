@@ -1,24 +1,21 @@
 <?php
 require_once('functions.php');
 
-session_start();
 
-$connect = mysqli_connect(
-    'localhost', //host
-    'root', //user
-    '', //pass
-    'yaticave' //db
-);
+$connect = mysqli_connect('localhost','root','','yeticave');
 
-mysqli_set_charset($connect, 'utf-8');
+mysqli_set_charset($connect, 'utf8');
 
 $categories = [];
-$connect = '';
+$lots = [];
+$bets = [];
+
+session_start();
 
 if (!$connect) {
-    $error = mysqli_connect_error();
-    exit();
-    $errorPage = renderTemplate(
+    $error = 'Ошибка подключения:' . mysqli_connect_error();
+
+    $content = renderTemplate(
         'error',
         [
             'error' => $error
@@ -28,15 +25,10 @@ if (!$connect) {
         'layout',
         [
             'title' => 'Yeti Cave — Ошибка',
-            'content' => $content,
-            'email' => $email,
-            'password' => $password,
-            'users' => $users
+            'content' => $content
         ]
     );
     print($layout_content);
-}
-else {
-    print("Соединение установлено");
+    exit();
 };
 ?>
