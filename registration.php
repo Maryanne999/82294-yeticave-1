@@ -41,10 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt = db_get_prepare_stmt($connect, $sql_reg, $data);
         $result_reg = mysqli_stmt_execute($stmt);
         if ($result_reg) {
-            $pass_hash = password_hash($password); {
             header("Location: add-form.php");
             }
-        }
     }
 }
 

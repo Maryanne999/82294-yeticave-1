@@ -34,8 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sql = "SELECT * FROM users WHERE email = ?";
         $data = [$email];
         $stmt = db_get_prepare_stmt($connect, $sql, $data);
-        $user = mysqli_stmt_execute($stmt);
-        $user = mysqli_stmt_get_result($stmt);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $user = mysqli_fetch_assoc($result);
 
 	if (password_verify($password, $user['password'])) {
 		$_SESSION['user'] = $user;

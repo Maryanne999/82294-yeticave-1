@@ -50,7 +50,7 @@
                     <form class="lot-item__form" action="lot.php?lot_id=<?=($_GET['lot_id']); ?>" method="post">
                         <p class="lot-item__form-item">
                             <label for="cost">Ваша ставка</label>
-                            <input id="cost" type="number" name="cost" placeholder="12 000" value="<?=$bet; ?>">
+                            <input id="cost" type="number" name="cost" placeholder="12 000" value="<?=$bet; ?>" required>
                         </p>
                         <button type="submit" class="button">Сделать ставку</button>
                     </form>

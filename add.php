@@ -69,13 +69,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         move_uploaded_file($_FILES['avatar'] ['tmp_name'], $file_path . $file_name);
 
-        $sql = 'INSERT INTO lots (lot_date, lot_name, description, lot-rate, lot_step, category) VALUES (NOW(), ?, ?, ?, ?, ?)';
-        $stmt = mysqli_prepare($connect, $sql);
+        $sql = 'INSERT INTO lots (creation_date, name, description, rate_step, image, price, category_id) VALUES (NOW(), ?, ?, ?, ?, ?)';
+        $data = [$lotDate, $lot_name, $description, $lot_rate, $avatar, $category ];
+        $stmt = db_get_prepare_stmt($connect, $sql, $data);
+        $result = mysqli_stmt_execute($stmt);
 
-        mysqli_stmt_bind_param($stmt, 'issiis', $lot['lot_date'], $lot['lot_name'], $lot['description'], $lot['lot-rate'], $lot['lot_step'], $lot['category']);
-        $res = mysqli_stmt_execute($stmt);
-
-        if ($res) {
+        if ($result) {
             $lot_id = mysqli_insert_id($connect);
 
             header("Location: lot.php?lot_id=" . $lot_id);
